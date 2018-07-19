@@ -5,6 +5,7 @@
     import android.app.AlertDialog
     import android.content.Intent
     import android.content.pm.PackageManager
+    import android.content.res.Configuration
     import android.graphics.Bitmap
     import android.net.Uri
     import android.os.Bundle
@@ -121,11 +122,34 @@
         private fun getBitmapFromUri(filePath: Uri): Bitmap? {
             var bitmap:Bitmap? = null
             try{
-                bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, filePath)
+                var tempBitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, filePath)
+                bitmap = updateImage(tempBitmap)
             }catch (ex: IOException){
 
             }
             return bitmap
+        }
+
+        private fun updateImage(bitmap: Bitmap): Bitmap{
+
+            val isLandScape = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            var scaledImageWidth = 0.0
+            var scaledImageHeight = 0.0
+
+            when (isLandScape){
+
+                (true)->{
+                    scaledImageHeight = snapShotView.height.toDouble()
+                    scaledImageWidth = bitmap.width.toDouble() * scaledImageHeight / bitmap.height.toDouble()
+                }
+                (false)->{
+                    scaledImageWidth = snapShotView.width.toDouble()
+                    scaledImageHeight = bitmap.height.toDouble() * scaledImageWidth / bitmap.width.toDouble()
+                }
+            }
+            val resizedBitmap = Bitmap.createScaledBitmap(bitmap,scaledImageWidth.toInt(),scaledImageHeight.toInt(),true)
+
+            return resizedBitmap
         }
 
         /***
