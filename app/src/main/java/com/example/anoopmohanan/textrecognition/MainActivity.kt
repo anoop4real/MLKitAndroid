@@ -162,6 +162,7 @@
          *
          *
          */
+        // https://firebase.google.com/docs/ml-kit/android/recognize-text
         fun recognizePicture(view: View){
             detectText()
         }
@@ -213,6 +214,7 @@
          *
          *
          */
+        // https://firebase.google.com/docs/ml-kit/android/label-images
         fun decodeImage(view: View){
 
             decodeImage()
@@ -271,6 +273,7 @@
          *
          *
          */
+        //https://firebase.google.com/docs/ml-kit/android/read-barcodes
         fun decodeBarcode(view: View){
 
             decodeBarcode()
@@ -344,6 +347,7 @@
          *
          */
 
+        //https://firebase.google.com/docs/ml-kit/android/detect-faces
         fun decodeFaces(view: View){
 
             decodeFaces()
@@ -360,13 +364,6 @@
                 .build()
             val detector = FirebaseVision.getInstance().getVisionFaceDetector(options)
 
-            //        val options = FirebaseVisionBarcodeDetectorOptions.Builder()
-            //            .setBarcodeFormats(
-            //                FirebaseVisionBarcode.FORMAT_QR_CODE,
-            //                FirebaseVisionBarcode.FORMAT_AZTEC
-            //            )
-            //            .build()
-            //        val detector = FirebaseVision.getInstance().getVisionBarcodeDetector(options)
             val img = selectedImage?.let { it } ?: kotlin.run { return }
             val image = FirebaseVisionImage.fromBitmap(img!!)
 
