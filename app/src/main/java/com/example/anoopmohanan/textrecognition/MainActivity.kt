@@ -22,7 +22,7 @@
     import com.google.firebase.ml.vision.face.FirebaseVisionFace
     import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions
     import com.google.firebase.ml.vision.face.FirebaseVisionFaceLandmark
-    import com.google.firebase.ml.vision.label.FirebaseVisionLabel
+    import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel
     import com.google.firebase.ml.vision.text.FirebaseVisionText
     import kotlinx.android.synthetic.main.activity_main.*
     import java.io.File
@@ -170,7 +170,7 @@
         private fun processTextRecognitionData(texts: FirebaseVisionText) {
 
             var finalText:String =""
-            val pieces = texts.blocks
+            val pieces = texts.textBlocks
             if (pieces.size == 0) {
 
                 return
@@ -192,9 +192,9 @@
 
             val img = selectedImage?.let { it } ?: kotlin.run { return }
             val image = FirebaseVisionImage.fromBitmap(img!!)
-            val detector = FirebaseVision.getInstance().visionTextDetector
+            val detector = FirebaseVision.getInstance().onDeviceTextRecognizer
 
-            detector.detectInImage(image)
+            detector.processImage(image)
                 .addOnSuccessListener { texts ->
                     processTextRecognitionData(texts)
                 }
@@ -224,9 +224,9 @@
 
             val img = selectedImage?.let { it } ?: kotlin.run { return }
             val image = FirebaseVisionImage.fromBitmap(img!!)
-            val detector = FirebaseVision.getInstance().visionLabelDetector
+            val detector = FirebaseVision.getInstance().onDeviceImageLabeler
 
-            detector.detectInImage(image)
+            detector.processImage(image)
                 .addOnSuccessListener {labels ->
                     processLabels(labels)
 
@@ -237,14 +237,14 @@
         }
 
 
-        private fun processLabels(labels: List<FirebaseVisionLabel>){
+        private fun processLabels(labels: List<FirebaseVisionImageLabel>){
 
 
             val lbl = labels.firstOrNull()
-            var msg = lbl?.label + "," + lbl?.confidence
+            var msg = lbl?.text + "," + lbl?.confidence
             updateLabel(msg)
             for (label in labels) {
-                val text = label.label
+                val text = label.text
                 val entityId = label.entityId
                 val confidence = label.confidence
 
@@ -356,11 +356,10 @@
         private fun decodeFaces(){
 
             val options = FirebaseVisionFaceDetectorOptions.Builder()
-                .setModeType(FirebaseVisionFaceDetectorOptions.ACCURATE_MODE)
-                .setLandmarkType(FirebaseVisionFaceDetectorOptions.ALL_LANDMARKS)
-                .setClassificationType(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS)
+                    .setPerformanceMode(FirebaseVisionFaceDetectorOptions.ACCURATE)
+                    .setLandmarkMode(FirebaseVisionFaceDetectorOptions.ALL_LANDMARKS)
+                    .setClassificationMode(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS)
                 .setMinFaceSize(0.15f)
-                .setTrackingEnabled(true)
                 .build()
             val detector = FirebaseVision.getInstance().getVisionFaceDetector(options)
 
