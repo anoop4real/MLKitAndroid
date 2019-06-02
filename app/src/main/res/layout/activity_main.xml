@@ -12,29 +12,30 @@
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="28dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="28dp"
+        android:layout_marginBottom="124dp"
         android:clickable="true"
         android:onClick="takePicture"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/snapShotView"
-        app:srcCompat="@android:drawable/ic_menu_camera"/>
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/button"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
 
     <ImageView
         android:id="@+id/snapShotView"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="138dp"
-        android:layout_marginEnd="38dp"
+        android:layout_height="263dp"
         android:layout_marginStart="38dp"
         android:layout_marginTop="42dp"
+        android:layout_marginEnd="38dp"
+        android:layout_marginBottom="138dp"
         app:layout_constraintBottom_toTopOf="@+id/floatingActionButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="?attr/colorButtonNormal"
-        />
+        app:srcCompat="?attr/colorButtonNormal" />
 
     <!--<com.wonderkiln.camerakit.CameraView-->
     <!--android:id="@+id/cameraView"-->
@@ -90,16 +91,14 @@
         android:id="@+id/imageLabel"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:layout_marginBottom="89dp"
-        android:layout_marginEnd="38dp"
         android:layout_marginStart="38dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="38dp"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/snapShotView"/>
+        app:layout_constraintTop_toBottomOf="@+id/snapShotView" />
 
     <Button
         android:id="@+id/button"
@@ -111,4 +110,17 @@
         android:text="Decode Face"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/decodeBarcodeBtn2"/>
+
+    <Button
+        android:id="@+id/translateViewButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:onClick="loadTranslate"
+        android:text="Translate"
+        app:layout_constraintBottom_toTopOf="@+id/decodeImageBtn2"
+        app:layout_constraintStart_toStartOf="@+id/decodeImageBtn2"
+        app:layout_constraintTop_toBottomOf="@+id/imageLabel"
+        app:layout_constraintVertical_bias="1.0" />
 </android.support.constraint.ConstraintLayout>

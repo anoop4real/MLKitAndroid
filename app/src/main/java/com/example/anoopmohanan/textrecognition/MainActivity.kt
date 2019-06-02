@@ -18,7 +18,6 @@
     import com.google.firebase.ml.vision.FirebaseVision
     import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
     import com.google.firebase.ml.vision.common.FirebaseVisionImage
-    import com.google.firebase.ml.vision.common.FirebaseVisionPoint
     import com.google.firebase.ml.vision.face.FirebaseVisionFace
     import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions
     import com.google.firebase.ml.vision.face.FirebaseVisionFaceLandmark
@@ -35,6 +34,7 @@
 
         val REQUEST_IMAGE_CAPTURE = 1
         var mCurrentPhotoPath: String = ""
+        private var recognizedText = ""
 
         var selectedImage: Bitmap? = null
         lateinit var photoURI:Uri
@@ -71,6 +71,11 @@
         }
 
 
+        fun loadTranslate(view: View){
+            val intent = Intent(this, TranslateActivity::class.java)
+            intent.putExtra("textToTranslate",recognizedText)
+            startActivity(intent)
+        }
         fun takePicture(view: View){
 
             clearLabel()
@@ -180,18 +185,19 @@
                     line.elements.forEach { element ->
 
                         var text = element.text
-                        finalText += text +","
+                        finalText += text +" "
                         Log.d("TEXTRECOG",text)
                     }
                 }
             }
+            recognizedText = finalText
             showAlert(finalText)
 
         }
         private fun detectText(){
 
             val img = selectedImage?.let { it } ?: kotlin.run { return }
-            val image = FirebaseVisionImage.fromBitmap(img!!)
+            val image = FirebaseVisionImage.fromBitmap(img)
             val detector = FirebaseVision.getInstance().onDeviceTextRecognizer
 
             detector.processImage(image)
@@ -223,7 +229,7 @@
         private fun decodeImage(){
 
             val img = selectedImage?.let { it } ?: kotlin.run { return }
-            val image = FirebaseVisionImage.fromBitmap(img!!)
+            val image = FirebaseVisionImage.fromBitmap(img)
             val detector = FirebaseVision.getInstance().onDeviceImageLabeler
 
             detector.processImage(image)
@@ -290,7 +296,7 @@
     //            .build()
     //        val detector = FirebaseVision.getInstance().getVisionBarcodeDetector(options)
             val img = selectedImage?.let { it } ?: kotlin.run { return }
-            val image = FirebaseVisionImage.fromBitmap(img!!)
+            val image = FirebaseVisionImage.fromBitmap(img)
             val detector = FirebaseVision.getInstance().visionBarcodeDetector
 
             detector.detectInImage(image)
@@ -364,7 +370,7 @@
             val detector = FirebaseVision.getInstance().getVisionFaceDetector(options)
 
             val img = selectedImage?.let { it } ?: kotlin.run { return }
-            val image = FirebaseVisionImage.fromBitmap(img!!)
+            val image = FirebaseVisionImage.fromBitmap(img)
 
 
             detector.detectInImage(image)
