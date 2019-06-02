@@ -174,24 +174,33 @@
 
         private fun processTextRecognitionData(texts: FirebaseVisionText) {
 
-            var finalText:String =""
-            val pieces = texts.textBlocks
-            if (pieces.size == 0) {
-
-                return
-            }
-            pieces.forEach { block ->
-                block.lines.forEach { line ->
-                    line.elements.forEach { element ->
-
-                        var text = element.text
-                        finalText += text +" "
-                        Log.d("TEXTRECOG",text)
+            val resultText = texts.text
+            recognizedText = resultText
+            showAlert(resultText)
+            /*
+            // Uncomment if you need deep tracking.
+            for (block in texts.textBlocks) {
+                val blockText = block.text
+                val blockConfidence = block.confidence
+                val blockLanguages = block.recognizedLanguages
+                val blockCornerPoints = block.cornerPoints
+                val blockFrame = block.boundingBox
+                for (line in block.lines) {
+                    val lineText = line.text
+                    val lineConfidence = line.confidence
+                    val lineLanguages = line.recognizedLanguages
+                    val lineCornerPoints = line.cornerPoints
+                    val lineFrame = line.boundingBox
+                    for (element in line.elements) {
+                        val elementText = element.text
+                        val elementConfidence = element.confidence
+                        val elementLanguages = element.recognizedLanguages
+                        val elementCornerPoints = element.cornerPoints
+                        val elementFrame = element.boundingBox
                     }
                 }
             }
-            recognizedText = finalText
-            showAlert(finalText)
+            */
 
         }
         private fun detectText(){
